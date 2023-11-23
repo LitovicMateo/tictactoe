@@ -30,7 +30,7 @@ const App: React.FC = () => {
 	};
 
 	return (
-		<div className="bg-gray-950 h-screen w-screen relative items-center">
+		<div className="fixed bg-gray-950 h-screen w-screen  items-center">
 			<AudioToggle handleAudio={handleAudio} isPlaying={audioPlaying} />
 			<div className="absolute w-full left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
 				<Title gameIsStarted={gameStatus} startGame={handleGameStatus} />
