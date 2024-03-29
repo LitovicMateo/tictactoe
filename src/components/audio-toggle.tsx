@@ -1,33 +1,54 @@
-import React, {useRef} from 'react'
+import React, { useEffect, useRef, useState } from "react";
 
 import AudioTheme from "../assets/main-theme.mp3";
 
-
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
-import VolumeMuteIcon from '@mui/icons-material/VolumeMute';
+import VolumeMuteIcon from "@mui/icons-material/VolumeMute";
 
-type Props = {
-	handleAudio: (audio: React.RefObject<HTMLAudioElement>) => void;
-	isPlaying: boolean
-}
+const AudioControl: React.FC = () => {
+    const [audioPlaying, setAudioPlaying] = useState(false);
+    const [audioLevel, setAudioLevel] = useState<number>(0);
 
-const AudioToggle: React.FC<Props> = ({handleAudio, isPlaying}) => {
+    const audioRef = useRef<HTMLAudioElement>(null);
 
-	const audioRef = useRef<HTMLAudioElement>(null)
-
-	const clickHandler = () => {
-		handleAudio(audioRef)
+	if (audioPlaying) {
+        audioRef!.current!.volume = audioLevel;
 	}
 
-	return (
-		<button
-		onClick={clickHandler}
-		className="z-50 fixed top-5 right-5 text-[#CF9500]"
-	>
-		<audio ref={audioRef} src={AudioTheme} loop={true} />
-		{isPlaying ? <VolumeMuteIcon /> : <VolumeUpIcon />}
-	</button>
-)
-}
+    const handleToggleAudio = () => {
+        if (audioPlaying) {
+            audioRef.current!.muted = true;
+            setAudioPlaying(false);
+            setAudioLevel(0);
+        } else if (audioRef.current!.muted) {
+            audioRef.current!.muted = false;
+            setAudioPlaying(true);
+            setAudioLevel(0.5);
+        } else {
+            audioRef.current!.play();
+            setAudioPlaying(true);
+            setAudioLevel(0.5);
+        }
+    };
 
-export default AudioToggle
+    return (
+        <div className="flex justify-end p-6 h-[24px] items-center gap-4">
+            <button onClick={handleToggleAudio} className="text-[#CF9500]">
+                <audio ref={audioRef} src={AudioTheme} loop={true} />
+                {!audioPlaying ? <VolumeMuteIcon /> : <VolumeUpIcon />}
+            </button>
+            <input
+                value={audioLevel}
+                onChange={(e) => setAudioLevel(+e.target.value)}
+                min={0}
+                max={1}
+                step={0.1}
+                type="range"
+                disabled={!audioPlaying}
+                className="accent-[#CF9500]"
+            />
+        </div>
+    );
+};
+
+export default AudioControl;
