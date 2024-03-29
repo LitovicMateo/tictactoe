@@ -39,7 +39,7 @@ const PlayingGridField: React.FC<Props> = ({ gridId }) => {
 			playerCtx.compMoveHandler(gridId);
 			return;
 		}
-	}, []);
+	}, [isFlipped, playerCtx]);
 
 
 
