@@ -48,7 +48,7 @@ const PlayingGridField: React.FC<Props> = ({ gridId }) => {
 			console.log("AI on the move..")
 			handleClick(gridId);
 		}
-	}, [playerCtx.player, gridId, playerCtx.player, playerCtx.aiMove, handleClick]);
+	}, [gridId, playerCtx.player, playerCtx.aiMove, handleClick]);
 
 
 
