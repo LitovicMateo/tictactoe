@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useCallback } from "react";
-import Crash from "../assets/crash-bandicoot.png";
-import Neo from "../assets/neo-cortex.png";
+import Crash from "../../public/crash-bandicoot.png";
+import Neo from "../../public/neo-cortex.png";
 import { motion } from "framer-motion";
 import { PlayerContext } from "../context/game-context";
 

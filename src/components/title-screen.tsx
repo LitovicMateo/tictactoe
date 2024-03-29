@@ -1,4 +1,4 @@
-import TitleImage from "../assets/WELCOME TO.png";
+import TitleImage from "../../public/WELCOME TO.png";
 
 import { AnimatePresence, motion } from "framer-motion";
 import Button from "./button";
