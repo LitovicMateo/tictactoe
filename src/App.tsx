@@ -9,7 +9,7 @@ const App: React.FC = () => {
 	const [gameStatus, setGameStatus] = useState(false);
 
 	const handleGameStatus = () => {
-		console.log("Playing...");
+		console.log("Playing....");
 		setGameStatus(true);
 	};
 
