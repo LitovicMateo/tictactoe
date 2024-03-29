@@ -50,6 +50,8 @@ export const PlayerContextProvider = ({ children }: { children: React.ReactNode 
 	const [crashFields, setCrashFields] = useState<number[]>([]);
 	const [neoFields, setNeoFields] = useState<number[]>([]);
 
+	console.log(crashFields, neoFields);
+	
 	const playerMoveHandler = (id: number) => {
 		
 		if (!gameState) {
