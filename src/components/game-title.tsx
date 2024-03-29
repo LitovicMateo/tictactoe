@@ -1,5 +1,3 @@
-import React from "react";
-
 import Tic from "../assets/TIC.png";
 import Tac from "../assets/TAC.png";
 import Toe from "../assets/TOE.png";
