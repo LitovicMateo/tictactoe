@@ -1,6 +1,6 @@
-import Tic from "../../public/TIC.png";
-import Tac from "../../public/TAC.png";
-import Toe from "../../public/TOE.png";
+import Tic from "/TIC.png";
+import Tac from "/TAC.png";
+import Toe from "/TOE.png";
 import TitleWord from "./title-word";
 
 const GameTitle = () => {
