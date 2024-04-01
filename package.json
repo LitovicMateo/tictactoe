@@ -2,7 +2,7 @@
   "name": "tictactoe",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://litovicmateo.github.io/",
+  "homepage": "https://litovicmateo.github.io/tictactoe",
   "type": "module",
   "scripts": {
     "dev": "vite",
