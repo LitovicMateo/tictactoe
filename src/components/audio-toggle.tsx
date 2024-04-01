@@ -1,7 +1,5 @@
 import React, { useRef, useState } from "react";
 
-import AudioTheme from "/main-theme.mp3";
-
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeMuteIcon from "@mui/icons-material/VolumeMute";
 
