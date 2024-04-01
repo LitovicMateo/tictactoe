@@ -1,5 +1,3 @@
-import TitleImage from "/WELCOME_TO.png";
-
 import { AnimatePresence, motion } from "framer-motion";
 import Button from "./button";
 import GameTitle from "./game-title";
@@ -18,7 +16,7 @@ const Title: React.FC<Props> = ({ startGame, gameIsStarted }) => {
                         <motion.div className="w-[90%]">
                             <motion.img
                                 key={1}
-                                src={TitleImage}
+                                src={"./WELCOME_TO.png"}
                                 initial={{ rotate: 0, scale: 0.05, y: 0 }}
                                 animate={{
                                     rotate: [120, 240, 360, 540, 720, 1080],

@@ -34,7 +34,7 @@ const AudioControl: React.FC = () => {
     return (
         <div className="flex justify-end p-6 h-[24px] items-center gap-4">
             <button onClick={handleToggleAudio} className="text-[#CF9500]">
-                <audio ref={audioRef} src={AudioTheme} loop={true} />
+                <audio ref={audioRef} src={"./main-theme.mp3"} loop={true} />
                 {!audioPlaying ? <VolumeMuteIcon /> : <VolumeUpIcon />}
             </button>
             <input
