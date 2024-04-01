@@ -11,7 +11,7 @@ type Props = {
 const PlayingGridField: React.FC<Props> = ({ gridId }) => {
     // Initialize variables
     const [isFlipped, setIsFlipped] = useState<boolean>(false);
-    const [image, setImage] = useState<string>();
+    const [image, setImage] = useState<"./crash-bandicoot.png" | "./neo-cortex.png">("./crash-bandicoot.png");
     const [winnerGrid, setWinnerGrid] = useState(false);
     const playerCtx = useContext(PlayerContext);
     console.log(playerCtx.player);
@@ -27,12 +27,12 @@ const PlayingGridField: React.FC<Props> = ({ gridId }) => {
             }
 
             if (playerCtx.player === "Crash") {
-                setImage(Crash);
+                setImage("./crash-bandicoot.png");
                 setIsFlipped(true);
                 playerCtx.playerMoveHandler(gridId);
                 return;
             } else if (playerCtx.player === "Neo") {
-                setImage(Neo);
+                setImage("./neo-cortex.png");
                 setIsFlipped(true);
                 playerCtx.compMoveHandler(gridId);
                 return;
