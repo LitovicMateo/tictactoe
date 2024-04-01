@@ -28,7 +28,7 @@ const Button: React.FC<Props> = ({ callback, mode }) => {
                     duration: 1.5,
                 },
             }}
-            className=" text-[#CF9500] font-irish uppercase text-2xl border-[#CF9500] border-2 px-4 py-2 rounded-3xl"
+            className="z-[1000] cursor-pointer text-[#CF9500] font-irish uppercase text-2xl border-[#CF9500] border-2 px-4 py-2 rounded-3xl"
         >
             {mode === "play" ? "Start New Game" : mode === "restart" ? "Play again" : "Error"}
         </motion.button>

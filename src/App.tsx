@@ -19,7 +19,7 @@ const App: React.FC = () => {
       <div className="absolute w-full left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
         <Title gameIsStarted={gameStatus} startGame={handleGameStatus} />
       </div>
-      <div className="absolute h-screen w-full left-[50%] top-[60%] translate-x-[-50%] translate-y-[-50%]">
+      <div className="absolute w-full left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
         <PlayingGrid gameStarted={gameStatus} />
       </div>
     </div>
