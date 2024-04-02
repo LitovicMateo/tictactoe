@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
-import { PlayerContext } from "../context/game-context";
+import { GameContext } from "../context/game-context";
 
 type Props = {
     gridId: number;
@@ -9,10 +9,9 @@ type Props = {
 const PlayingGridField: React.FC<Props> = ({ gridId }) => {
     // Initialize variables
     const [isFlipped, setIsFlipped] = useState<boolean>(false);
-    const [image, setImage] = useState<"./crash-bandicoot.png" | "./neo-cortex.png">("./crash-bandicoot.png");
+    const [image, setImage] = useState<"./characters/crash-bandicoot.png" | "./characters/neo-cortex.png">("./characters/neo-cortex.png");
     const [winnerGrid, setWinnerGrid] = useState(false);
-    const playerCtx = useContext(PlayerContext);
-    console.log(playerCtx.player);
+    const gameCtx = useContext(GameContext);
 
     const handleClick = useCallback(
         (gridId: number) => {
@@ -20,45 +19,44 @@ const PlayingGridField: React.FC<Props> = ({ gridId }) => {
                 return;
             }
 
-            if (playerCtx.winner.length === 3) {
+            if (gameCtx.winner.length === 3) {
                 return;
             }
 
-            if (playerCtx.player === "Crash") {
-                setImage("./crash-bandicoot.png");
+            if (gameCtx.player === "Crash") {
+                setImage("./characters/crash-bandicoot.png");
                 setIsFlipped(true);
-                playerCtx.playerMoveHandler(gridId);
+                gameCtx.playerMoveHandler(gridId);
                 return;
-            } else if (playerCtx.player === "Neo") {
-                setImage("./neo-cortex.png");
+            } else if (gameCtx.player === "Neo") {
+                setImage("./characters/neo-cortex.png");
                 setIsFlipped(true);
-                playerCtx.compMoveHandler(gridId);
+                gameCtx.compMoveHandler(gridId);
                 return;
             }
         },
-        [isFlipped, playerCtx]
+        [isFlipped, gameCtx]
     );
 
     useEffect(() => {
-        if (playerCtx.player === "Neo" && gridId === playerCtx.aiMove) {
-            console.log("AI on the move..");
+        if (gameCtx.player === "Neo" && gridId === gameCtx.aiMove) {
             handleClick(gridId);
         }
-    }, [gridId, playerCtx.player, playerCtx.aiMove, handleClick]);
+    }, [gridId, gameCtx.player, gameCtx.aiMove, handleClick]);
 
     useEffect(() => {
-        if (playerCtx.winner && playerCtx.winner && playerCtx.winner.includes(gridId)) {
+        if (gameCtx.winner && gameCtx.winner.includes(gridId)) {
             setWinnerGrid(true);
         }
-    }, [playerCtx.winner, gridId]);
+    }, [gameCtx.winner, gridId]);
 
     // Game reset logic
     useEffect(() => {
-        if (!playerCtx.gameState) {
+        if (!gameCtx.gameState) {
             setIsFlipped(false);
             setWinnerGrid(false);
         }
-    }, [playerCtx.gameState]);
+    }, [gameCtx.gameState]);
 
     const variants = {
         initial: {
@@ -80,12 +78,12 @@ const PlayingGridField: React.FC<Props> = ({ gridId }) => {
     return (
         <motion.div
             onClick={handleClick.bind(null, gridId)}
-            className="h-[90%] w-[90%] bg-[#CF9500] rounded-md my-auto mx-auto select-none"
+            className="h-[90%] w-[90%] flex justify-center items-center bg-[#CF9500] rounded-md my-auto mx-auto select-none"
             initial="initial"
             animate={!isFlipped ? "initail" : winnerGrid ? "winner" : "flipped"}
             variants={variants}
         >
-            {isFlipped && <img src={image} alt="" />}
+            {isFlipped && <img src={image} className="w-[80%] aspect-square" />}
         </motion.div>
     );
 };

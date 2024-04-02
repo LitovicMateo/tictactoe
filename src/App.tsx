@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import PlayingGrid from "./components/playing-grid";
 import Title from "./components/title-screen";
 import AudioControl from "./components/audio-toggle";
+import GameScreen from "./components/game-screen";
 
 export type ActivePlayer = "Crash" | "Neo";
 
@@ -20,7 +20,7 @@ const App: React.FC = () => {
         <Title gameIsStarted={gameStatus} startGame={handleGameStatus} />
       </div>
       <div className="absolute w-full left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
-        <PlayingGrid gameStarted={gameStatus} />
+        <GameScreen gameIsStarted={gameStatus} />
       </div>
     </div>
   );

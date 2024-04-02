@@ -1,165 +1,177 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { ActivePlayer } from "../App";
 import { aiMove } from "../lib/ai-move";
+import { PlayerContext } from "./players-context";
 
-type PlayerContextType = {
-    player: ActivePlayer;
-    round: number;
-    winner: number[];
-    message: string;
-    gameState: boolean;
-    aiMove: number | null;
-    playerMoveHandler: (id: number) => void;
-    compMoveHandler: (id: number) => void;
-    resetGame: () => void;
+type GameContextType = {
+  player: ActivePlayer;
+  round: number;
+  winner: number[];
+  message: string;
+  gameState: boolean;
+  aiMove: number | null;
+  playerMoveHandler: (id: number) => void;
+  compMoveHandler: (id: number) => void;
+  resetGame: () => void;
 };
 
 const winConditions = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9],
-    [1, 4, 7],
-    [2, 5, 8],
-    [3, 6, 9],
-    [1, 5, 9],
-    [3, 5, 7],
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9],
+  [1, 4, 7],
+  [2, 5, 8],
+  [3, 6, 9],
+  [1, 5, 9],
+  [3, 5, 7],
 ];
 
-export const PlayerContext = createContext<PlayerContextType>({
-    player: "Crash",
-    round: 0,
-    winner: [],
-    message: "",
-    gameState: true,
-    aiMove: null,
-    playerMoveHandler: () => {},
-    compMoveHandler: () => {},
-    resetGame: () => {},
+export const GameContext = createContext<GameContextType>({
+  player: "Crash",
+  round: 0,
+  winner: [],
+  message: "",
+  gameState: true,
+  aiMove: null,
+  playerMoveHandler: () => {},
+  compMoveHandler: () => {},
+  resetGame: () => {},
 });
 
 const initialArr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-export const PlayerContextProvider = ({ children }: { children: React.ReactNode }) => {
-    const [gameState, setGameState] = useState(true);
-    const [fields, setFields] = useState<number[]>(initialArr);
-    const [player, setPlayer] = useState<ActivePlayer>("Crash");
-    const [round, setRound] = useState<number>(0);
-    const [aiChioce, setAiChoice] = useState<number | null>(null);
-    const [winner, setWinner] = useState<number[]>([]);
-    const [message, setMessage] = useState<string>("");
-    const [crashFields, setCrashFields] = useState<number[]>([]);
-    const [neoFields, setNeoFields] = useState<number[]>([]);
+export const GameContextProvider = ({ children }: { children: React.ReactNode }) => {
+  const [gameState, setGameState] = useState(true);
+  const [fields, setFields] = useState<number[]>(initialArr);
+  const [player, setPlayer] = useState<ActivePlayer>("Crash");
+  const [round, setRound] = useState<number>(0);
+  const [aiChioce, setAiChoice] = useState<number | null>(null);
+  const [winner, setWinner] = useState<number[]>([]);
+  const [message, setMessage] = useState<string>("");
+  const [crashFields, setCrashFields] = useState<number[]>([]);
+  const [neoFields, setNeoFields] = useState<number[]>([]);
 
-    console.log(crashFields, neoFields);
+  const playerCtx = useContext(PlayerContext);
 
-    const playerMoveHandler = (id: number) => {
-        if (!gameState) {
-            setGameState(true);
-        }
+  console.log(crashFields, neoFields);
 
-        setRound((prev) => prev + 1);
-        setPlayer("Neo");
+  const playerMoveHandler = (id: number) => {
+    if (!gameState) {
+      setGameState(true);
+    }
 
-        setCrashFields((prev) => {
-            const newArr = [...prev, id];
-            const result = checkWin(newArr, player);
-            if (result) {
-                setWinner(result);
-            }
+    setRound((prev) => prev + 1);
+    setPlayer("Neo");
 
-            return [...prev, id];
-        });
-        setFields((prev) => {
-            const newArr = prev.filter((el) => el !== id);
-            if (newArr.length === 0) {
-                setMessage("The game is tied!");
-            }
+    setCrashFields((prev) => {
+      const newArr = [...prev, id];
+      const result = checkWin(newArr, player);
+      if (result) {
+        setWinner(result);
+      }
 
-            setAiChoice(aiMove(newArr));
-            return newArr;
-        });
-    };
+      return [...prev, id];
+    });
+    setFields((prev) => {
+      const newArr = prev.filter((el) => el !== id);
+      if (newArr.length === 0) {
+        setMessage("The game is tied!");
+      }
 
-    const compMoveHandler = (ai: number) => {
-        if (!gameState) {
-            setGameState(true);
-        }
+      setAiChoice(aiMove(newArr));
+      return newArr;
+    });
+  };
 
-        setRound((prev) => prev + 1);
-        setPlayer("Crash");
+  const compMoveHandler = (ai: number) => {
+    if (!gameState) {
+      setGameState(true);
+    }
 
-        setNeoFields((prev) => {
-            const newArr = [...prev, ai];
-            const result = checkWin(newArr, player);
-            if (result) {
-                setWinner(result);
-            }
+    setRound((prev) => prev + 1);
+    setPlayer("Crash");
 
-            return [...prev, ai];
-        });
-        setFields((prev) => {
-            const newArr = prev.filter((el) => el !== ai);
-            if (newArr.length === 0) {
-                setMessage("The game is tied!");
-            }
-            return newArr;
-        });
-        setPlayer("Crash");
-        setAiChoice(null);
-        return;
-    };
+    setNeoFields((prev) => {
+      const newArr = [...prev, ai];
+      const result = checkWin(newArr, player);
+      if (result) {
+        setWinner(result);
+      }
 
-    const resetGameHandler = () => {
-        setPlayer("Crash");
-        setRound(0);
-        setMessage("");
-        setCrashFields([]);
-        setNeoFields([]);
-        setGameState(false);
-        setWinner([]);
-        setAiChoice(null);
-        setFields(initialArr);
-    };
+      return [...prev, ai];
+    });
+    setFields((prev) => {
+      const newArr = prev.filter((el) => el !== ai);
+      if (newArr.length === 0) {
+        setMessage("The game is tied!");
+      }
+      return newArr;
+    });
+    setPlayer("Crash");
+    setAiChoice(null);
+    return;
+  };
 
-    const checkWin = (array: number[], player: ActivePlayer) => {
-        for (const arr of winConditions) {
-            // Check if either player has all elements from
-            // one of the winnable arrays
-            const contains = arr.every((el) => array.includes(el));
+  const resetGameHandler = () => {
+    setPlayer("Crash");
+    setRound(0);
+    setMessage("");
+    setCrashFields([]);
+    setNeoFields([]);
+    setGameState(false);
+    setWinner([]);
+    setAiChoice(null);
+    setFields(initialArr);
+  };
 
-            // If there is a winner, set the message
-            // and return the winning array
-            if (contains && player === "Crash") {
-                setMessage("Crash Bandicoot wins!");
-                return arr;
-            } else if (contains && player === "Neo") {
-                setMessage("Neo Cortex wins!");
-                return arr;
-            }
-        }
-    };
+  const checkWin = (array: number[], player: ActivePlayer) => {
+    for (const arr of winConditions) {
+      // Check if either player has all elements from
+      // one of the winnable arrays
+      const contains = arr.every((el) => array.includes(el));
 
-    useEffect(() => {
-        if (fields.length === 0 && !winner) {
-            setMessage("The game is tied!");
-        }
-    }, [winner, fields]);
+      // If there is a winner, set the message
+      // and return the winning array
+      if (contains && player === "Crash") {
+        setMessage("Crash Bandicoot wins!");
 
-    return (
-        <PlayerContext.Provider
-            value={{
-                player,
-                round,
-                message,
-                winner,
-                gameState,
-                aiMove: aiChioce,
-                resetGame: resetGameHandler,
-                playerMoveHandler,
-                compMoveHandler,
-            }}
-        >
-            {children}
-        </PlayerContext.Provider>
-    );
+        return arr;
+      } else if (contains && player === "Neo") {
+        setMessage("Neo Cortex wins!");
+        return arr;
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (winner.length > 0 && player === "Neo") {
+      playerCtx.addScore("one");
+    } else if (winner.length > 0 && player === "Crash") {
+        playerCtx.addScore("two")
+    }
+  }, [winner]);
+
+  useEffect(() => {
+    if (fields.length === 0 && !winner) {
+      setMessage("The game is tied!");
+    }
+  }, [winner, fields]);
+
+  return (
+    <GameContext.Provider
+      value={{
+        player,
+        round,
+        message,
+        winner,
+        gameState,
+        aiMove: aiChioce,
+        resetGame: resetGameHandler,
+        playerMoveHandler,
+        compMoveHandler,
+      }}
+    >
+      {children}
+    </GameContext.Provider>
+  );
 };
